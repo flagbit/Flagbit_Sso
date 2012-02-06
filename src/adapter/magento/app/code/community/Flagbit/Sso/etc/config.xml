@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<modules>
+		<Flagbit_Sso>
+			<version>0.1.0</version>
+		</Flagbit_Sso>
+	</modules>
+
+	<global>
+		<blocks>
+			<sso>
+				<class>Flagbit_Sso_Block</class>
+			</sso>
+		</blocks>
+		<helpers>
+			<sso>
+				<class>Flagbit_Sso_Helper</class>
+			</sso>
+		</helpers>
+		<models>
+			<sso>
+				<class>Flagbit_Sso_Model</class>
+			</sso>
+		</models>
+	</global>
+
+	<frontend>
+		<routers>
+			<sso>
+				<use>standard</use>
+				<args>
+					<module>Flagbit_Sso</module>
+					<frontName>sso</frontName>
+				</args>
+			</sso>
+		</routers>
+	</frontend>
+
+	<default>
+		<customer>
+			<sso>
+				<privateKey></privateKey>
+				<publicKey></publicKey>
+			</sso>
+		</customer>
+	</default>
+</config>
