@@ -2,7 +2,7 @@
 // Exit, if script is called directly (must be included via eID in index_ts.php)
 if (!defined ('PATH_typo3conf')) die ('Could not access this script directly!');
 
-require_once(PATH_tslib.'class.tslib_pibase.php');
+require_once(PATH_t3lib.'class.t3lib_svbase.php');
 
 /* ToDo: Implement ZendLoader */
 require_once(PATH_t3lib.'Flagbit/Sso.php');
@@ -13,7 +13,7 @@ require_once(PATH_t3lib.'Flagbit/Sso/Storage/Abstract.php');
 require_once(PATH_t3lib.'Flagbit/Sso/Storage/Json.php');
 
 
-class ssoAdapter extends tslib_pibase
+class sso_test extends tx_sv_authbase
 {
   protected $_data = NULL;
   protected $_sso = NULL;
@@ -24,18 +24,15 @@ class ssoAdapter extends tslib_pibase
     $this->_sso = new Flagbit_Sso;
   }
 
-  public function loginUser()
+  public function verify()
   {
    $OK = FALSE;
    if( $this->_sso->loadContainer($this->_data)->verify( $this->_getPublicKey() ) === TRUE ) {
-    	// login successful
-		echo "login successful";
-		// ToDo - auth user
+    $OK = TRUE;
    } else {
-   		// login failed
-		echo "login failed"; 
-		// ToDo - add error page
-   }
+    $OK = FALSE;
+  }
+   return $OK;
   }
 
   protected function _getPublicKey()
@@ -44,6 +41,11 @@ class ssoAdapter extends tslib_pibase
   }
 }
 
-$adapter = t3lib_div::makeInstance("ssoAdapter");
-$adapter->loginUser();
+$output = t3lib_div::makeInstance("sso_test");
+
+if( $output->verify() === TRUE ) {
+	//ToDo: Implement authservice
+} else {
+	//ToDo: Implement redirection
+}
 ?>
