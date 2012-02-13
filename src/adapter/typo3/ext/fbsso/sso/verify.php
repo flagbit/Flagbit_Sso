@@ -30,6 +30,12 @@ class ssoAdapter extends t3lib_userauth
   {
 	return $GLOBALS["TYPO3_DB"]->sql_fetch_assoc( $GLOBALS["TYPO3_DB"]->exec_SELECTquery( "*", "fe_users", "email='" . $email . "'" ) );
   }
+  
+  protected function _createUser($user)
+  {
+  	$GLOBALS['TSFE']->fe_user->createUserSession($user);
+  }
+  
   public function loginUser()
   {
 	if( $this->_sso->loadContainer($this->_data)->verify( $this->_getPublicKey() ) === TRUE )
@@ -40,7 +46,10 @@ class ssoAdapter extends t3lib_userauth
 			$GLOBALS['TSFE']->fe_user->createUserSession($user);
 			t3lib_utility_Http::redirect();
 		} else {
-			// create user
+			$user['mail'] = $this->_sso->getContainer()->getValue('container/email');
+			$this->_createUser($user);
+			$GLOBALS['TSFE']->fe_user->createUserSession($user);
+			t3lib_utility_Http::redirect();
 		}		
 	} else {
 		t3lib_utility_Http::redirect();
