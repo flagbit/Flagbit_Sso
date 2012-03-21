@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+
+	<customer_logged_in>
+		<reference name="content">
+			<block type="sso/sessionajax" />
+		</reference>
+	</customer_logged_in>
+	
+</layout>
