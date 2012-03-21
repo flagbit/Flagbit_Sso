@@ -33,7 +33,7 @@ class Flagbit_Sso
 	public function getContainer()
 	{
 		if( !($this->_container instanceof Flagbit_Sso_Storage_Interface) ) {
-			this->_container = new $this->_options['containerObject'];
+			$this->_container = new $this->_options['containerObject'];
 		}
 		return $this->_container;
 	}
@@ -82,15 +82,15 @@ class Flagbit_Sso
 			throw new Exception('Container must not be empty');
 		}
 
-		$data = $this->_container->getDataAsString('container');
+		$data = $this->_container->getContainerAsString();
 
-		$this->_container->setValue('signature',
-									$this->_getSignatureObject($type)
-									->createSign(
-												$data,
-												$privateKey
-												)
-									);
+		$this->_container->setSignature(
+										$this->_getSignatureObject($type)
+										->createSign(
+														$data,
+														$privateKey
+													)
+										);
 		return $this->_container->getContainerAsString();
 	}
 
@@ -108,12 +108,18 @@ class Flagbit_Sso
 			$type = $this->_options['signatureObject'];
 		}
 
-		$data = $this->_container->getDataAsString('container');
-		$signature = $this->_container->getValue('signature');
+		
+		$signature = $this->_container->getSignature();
+		
+		$this->_container->unsetSignature();
+		$data = $this->_container->getContainerAsString();
+		$this->_container->setSignature($signature);
+		
+		
+		
 		$result = FALSE;
 		
-		if( $this->_getSignatureObject($type)->verifySign($data, $signature, $publicKey) &&
-			$this->_container->getValue('container/expiration')-time() > 0 ) {
+		if( $this->_getSignatureObject($type)->verifySign($data, $signature, $publicKey)) {
 			$result = TRUE;
 		}
 		
