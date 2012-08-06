@@ -49,4 +49,21 @@ class Flagbit_Sso_Helper_Data extends Mage_Core_Helper_Abstract
 		return $this->_target;
 	}
 	
+	/**
+	 * Create an encrypted string of an data array
+	 * 
+	 * @param array $data
+	 */
+	public function createSsoString(array $data) {
+		
+		$libObj = new Flagbit_Sso();
+		
+		$container = $libObj->getContainer();
+		foreach($data as $param => $value) {
+			$container->{'set'.ucfirst($param)}($value);
+		}
+		return $libObj->create($this->_privateKey);
+		
+	}
+	
 }

@@ -1,11 +1,12 @@
 <?php
-class Flagbit_Sso_Block_Sessionajax extends Mage_Core_Block_Template
+class Flagbit_Sso_Block_Sessionajax extends Flagbit_Sso_Block_Abstract
 {
     protected function _toHtml()
     {
-		$param = Mage::getSingleton('core/session')->getSsoParams();
-		$url = Mage::helper('sso/data')->getTarget().'/eID=sso';
-		$ajaxRequest = "new Ajax.Request( '$url', { method:'post', parameters: {d: '$param' } } );";
+    	$param = $this->_initParams();
+    	
+		$url = Mage::helper('sso/data')->getTarget();
+		$ajaxRequest = 'new Ajax.Request(\''.$url.$param.'\', { method:\'get\' });';
 		$html = '<script type="text/javascript">' . $ajaxRequest . '</script>';
         return $html;
     }

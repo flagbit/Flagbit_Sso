@@ -2,6 +2,7 @@
 
 class Flagbit_Sso_Model_Session extends Mage_Customer_Model_Session
 {
+	
 	/**
 	 * 
 	 * set the customer as logged in and redirect to the account site
@@ -12,6 +13,7 @@ class Flagbit_Sso_Model_Session extends Mage_Customer_Model_Session
 		$this->setCustomerAsLoggedIn( $customer );
 		Mage::app()->getResponse()->setRedirect(Mage::getUrl('customer/account'));
 	}
+	
 	/**
 	
 	 * 
@@ -20,16 +22,11 @@ class Flagbit_Sso_Model_Session extends Mage_Customer_Model_Session
 	 * @param string $lastname
 	 * @param string $email
 	 */
-	public function loginBySso($firstname, $lastname, $email)
+	public function loginBySso($identifier)
 	{
 		$customer = Mage::getModel('customer/customer');
 		$customer->setWebsiteId(Mage::app()->getStore()->getWebsiteId());
-		$customer->loadByEmail($email);
-		
-		$customer->setEmail($email);
-		$customer->setFirstname($firstname);
-		$customer->setLastname($lastname);
-		$customer->save();
+		$customer->loadByEmail($identifier);
 		
 		$this->_setCustomerAsLoggedInBySso($customer);
 	}
