@@ -1,0 +1,7 @@
+plugin.tx_infinigatesso {
+	# cat=Infinigate SSO//1; type=string; label=Instance Name: Identifier for the TYPO3 instance
+	TYPO3InstanceName = 
+	
+	# cat=Infinigate SSO//2; type=int+; label=Root PID: ID of the root page
+	rootPid = 
+}
