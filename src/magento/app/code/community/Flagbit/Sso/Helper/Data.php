@@ -5,6 +5,7 @@ class Flagbit_Sso_Helper_Data extends Mage_Core_Helper_Abstract
 	protected $_privateKey = NULL;
 	protected $_publicKey = NULL;
 	protected $_target = NULL;
+	protected $_logouturl = NULL;
 	protected $_expirationFactor = NULL;
 	
 	/**
@@ -16,6 +17,7 @@ class Flagbit_Sso_Helper_Data extends Mage_Core_Helper_Abstract
 		$this->_privateKey = Mage::getStoreConfig('customer/sso/privateKey');
 		$this->_publicKey = Mage::getStoreConfig('customer/sso/publicKey');
 		$this->_target = Mage::getStoreConfig('customer/sso/target');
+		$this->_logouturl = Mage::getStoreConfig('customer/sso/logouturl');
 		$this->_expirationFactor = Mage::getStoreConfig('customer/sso/expirationFactor');
 	}
 	
@@ -47,6 +49,11 @@ class Flagbit_Sso_Helper_Data extends Mage_Core_Helper_Abstract
 	public function getTarget()
 	{
 		return $this->_target;
+	}
+	
+	public function getLogouturl()
+	{
+		return $this->_logouturl;
 	}
 	
 	/**

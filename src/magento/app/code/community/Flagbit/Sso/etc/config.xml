@@ -41,6 +41,16 @@
               </sso>
           </updates>
          </layout>
+         <events>
+            <customer_logout>
+                <observers>
+                    <sso>
+                        <class>Flagbit_Sso/Session</class>
+                        <method>bindCustomerLogout</method>
+                    </sso>
+                </observers>
+            </customer_logout>
+         </events>
 	</frontend>
 
 	<default>
@@ -49,6 +59,7 @@
 				<privateKey></privateKey>
 				<publicKey></publicKey>
 				<target></target>
+				<logouturl></logouturl>
 			</sso>
 		</customer>
 	</default>
