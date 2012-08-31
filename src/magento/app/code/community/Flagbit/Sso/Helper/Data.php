@@ -21,6 +21,7 @@ class Flagbit_Sso_Helper_Data extends Mage_Core_Helper_Abstract
 		$this->_expirationFactor = Mage::getStoreConfig('customer/sso/expirationFactor');
 	}
 	
+	
 	/**
 	 * 
 	 * @desc returns the stored privateKey
@@ -51,6 +52,11 @@ class Flagbit_Sso_Helper_Data extends Mage_Core_Helper_Abstract
 		return $this->_target;
 	}
 	
+	/**
+	 *
+	 * @desc returns the stored logout url
+	 * @return string $_logouturl
+	 */
 	public function getLogouturl()
 	{
 		return $this->_logouturl;
