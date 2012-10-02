@@ -6,30 +6,7 @@
 [loginUser = *]
 page.42424 = USER_INT
 page.42424 {
-	includeLibs = EXT:infinigate_sso/Classes/class.tx_infinigate_ssoServices.php
-	userFunc = user_tx_infinigate_ssoServices->provideSpoofedImgTags
+	includeLibs = EXT:infinigate_sso/Classes/class.user_tx_infinigate_sso_registeredServices.php
+	userFunc = user_tx_infinigate_sso_registeredServices->provideSpoofedLoginImgTags
 }
 [global]
-
-### ===================================================
-###	Registers the to-be authenticated SSO Services 
-### ===================================================
-[PIDinRootline = {$plugin.tx_infinigatesso.rootPid}]
-plugin.tx_infinigatesso.service_providers {
-	1 {
-		name = Magento
-		uriTemplate = http://sso.demo.flagbit.com/sso/signature/verify/d/{SSOData}
-	}
-}
-[global]
-
-### ===========================================
-###	Provides SSO Authentication via eID
-### ===========================================
-plugin.tx_infinigatesso.auth_service {
-	1 {
-		name = {$plugin.tx_infinigatesso.TYPO3InstanceName}
-		publicKey = 
-	}
-}
-

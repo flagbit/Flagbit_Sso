@@ -15,8 +15,9 @@ INSTALLATION
 a) SSO REGISTRATION PROVIDER
 
 TS constants:
-ThisTYPO3InstancesName = MyFancyTYPO3Instance # this needs to be in sync with the authentication provider's Client-PublicKey-Settings
-root_pid = 12 # this is the page containing the TS settings below (each subpagetree can hold its own SSO Authentication Server configuration)
+{$ThisTYPO3InstancesName} = MyFancyTYPO3Instance # this needs to be in sync with the authentication provider's Client-PublicKey-Settings
+{$root_pid} = 12 # this is the page containing the TS settings below (each subpagetree can hold its own SSO Authentication Server configuration, 
+	e.g. {$root_pid_fr}, {$root_pid_en} and {$root_pid_de} as stated below.)
 
 TS setup:
 This simply includes the userfunc providing <img /> tags for each authentication server 
@@ -29,10 +30,10 @@ page tree. (see TS examples below)
 ###	cookies hidden behind the <img src=""> url.
 ### =====================================================
 [loginUser = *]
-includeLibs.user_tx_infinigate_ssoServices= EXT:infinigate_sso/Classes/class.tx_infinigate_ssoServices.php
-page.stdWrap.postCObject = USER
-page.stdWrap.postCObject {
-	userFunc = user_tx_infinigate_ssoServices->provideSpoofedImgTags
+page.42424 = USER_INT
+page.42424 {
+	includeLibs = EXT:infinigate_sso/Classes/class.user_tx_infinigate_sso_registeredServices.php
+	userFunc = user_tx_infinigate_sso_registeredServices->provideSpoofedLoginImgTags
 }
 
 ### ===================================================
@@ -42,30 +43,34 @@ page.stdWrap.postCObject {
 plugin.tx_infinigatesso.service_providers {
 	1 {
 		name = Service #1
-		uriTemplate = //web4.dev.flagbit.com/index.php?id=1&eID=infinigate_sso&name={$ThisTYPO3InstancesName}&sso={SSOData}
+		loginUriTemplate = //web4.dev.flagbit.com/index.php?id=1&eID=infinigate_sso&name={$ThisTYPO3InstancesName}&sso={SSOData}
+		logoutUri = http://sso.demo.flagbit.com/customer/account/logout
 	}
 	2 {
 		name = Magento (de)
-		uriTemplate = //web4.dev.flagbit.com/index.php?id=1&eID=infinigate_sso&name={$ThisTYPO3InstancesName}&sso={SSOData}
+		loginUriTemplate = //web4.dev.flagbit.com/index.php?id=1&eID=infinigate_sso&name={$ThisTYPO3InstancesName}&sso={SSOData}
+		logoutUri = http://sso.demo.flagbit.com/customer/account/logout
 	}
 }
 [PIDinRootline = {$root_pid_en}]
 plugin.tx_infinigatesso.service_providers {
 	1 {
 		name = Magento (en)
-		uriTemplate = http://web4.dev.flagbit.com/index.php?id=1&eID=infinigate_sso&name={$ThisTYPO3InstancesName}&sso={SSOData}
+		loginUriTemplate = http://web4.dev.flagbit.com/index.php?id=1&eID=infinigate_sso&name={$ThisTYPO3InstancesName}&sso={SSOData}
+		logoutUri = http://sso.demo.flagbit.com/customer/account/logout
 	}
 }
 [PIDinRootline = {$root_pid_de}]
 plugin.tx_infinigatesso.service_providers {
 	1 {
 		name = Magento (int)
-		uriTemplate = //web4.dev.flagbit.com/index.php?id=1&eID=infinigate_sso&name={$ThisTYPO3InstancesName}&sso={SSOData}
+		loginUriTemplate = //web4.dev.flagbit.com/index.php?id=1&eID=infinigate_sso&name={$ThisTYPO3InstancesName}&sso={SSOData}
+		logoutUri = http://sso.demo.flagbit.com/customer/account/logout
 	}
 }
 [global]
 
-
+The substring `{SSOData}' will be replaced with the essential SSO container thus the login-side can be freely configured.
 
 b) SSO AUTHENTICATION SERVICE
 Private Key:
@@ -99,7 +104,7 @@ plugin.tx_infinigatesso.auth_service {
 }
 
  
-EXPERT ADVICES
+SOME ADVICES
 - installing TYPO3s devlog extension will reward you with sweet debug sugar
-- do not forget the BEGIN/END parts of the ssl keys since openssl_* seems to rely on them
+- do not forget the BEGIN/END parts of the ssl keys since openssl_* relies on them
 - the authentication service provides debug "images" instead of a blindgif if the given sso container is invalid/broken or something bad happened

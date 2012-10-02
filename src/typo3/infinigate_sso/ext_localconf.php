@@ -3,15 +3,13 @@ if (!defined('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
+	// register eID login mechanism 
+$TYPO3_CONF_VARS['FE']['eID_include']['infinigate_sso'] = 'EXT:infinigate_sso/Classes/class.tx_infinigate_sso_eIdLoginMechanism.php';
 
-// $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent'] = 'Classes/class.tx_fbsso_authSsoServices.php->getSpoofedImgTags';
-//$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['login_confirmed'] = array('EXT:fb_sso/Classes/class.tx_infinigate_ssoServices.php:&tx_infinity_feloginHook->provideSpoofedImgTags');
+	// handle logout event
+$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing'][] = 'EXT:infinigate_sso/Classes/class.tx_infinigate_sso_logoutObserver.php:tx_infinigate_sso_logoutObserver->logoff';
 
-$TYPO3_CONF_VARS['FE']['eID_include']['infinigate_sso'] = 'EXT:infinigate_sso/Classes/class.tx_infinigate_feloginHook.php';
-
-//$TYPO3_CONF_VARS['SVCONF']['auth']['setup']['FE_alwaysFetchUser'] = TRUE;
-//$TYPO3_CONF_VARS['SVCONF']['auth']['setup']['FE_alwaysAuthUser'] = TRUE;
-//$TYPO3_CONF_VARS['SVCONF']['auth']['setup']['FE_fetchUserIfNoSession'] = TRUE;
-
+	// if logout even was registered, this hook cares for adding spoofed <img>'s to the page's body 
+$TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe'][] = 'EXT:infinigate_sso/Classes/class.user_tx_infinigate_sso_registeredServices.php:user_tx_infinigate_sso_registeredServices->provideSpoofedLogoutImageTags';
 
 ?>

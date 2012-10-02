@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__."/class.tx_infinigate_abstractSso.php";
+require_once __DIR__."/class.tx_infinigate_sso_abstract.php";
 
 class tx_infinigate_sso_eIDLoginMechanism extends tx_infinigate_sso_abstract {
 
@@ -78,7 +78,7 @@ class tx_infinigate_sso_eIDLoginMechanism extends tx_infinigate_sso_abstract {
 	 * 
 	 * @param $key The subindex of the to-be-fetched TS configuration
 	 * @return String TS configuration 
-	 */
+	 *
 	protected function fetchTyposcriptConfiguration($key) {
 		$tsConf = $this->tsfe->tmpl->setup['plugin.']['tx_infinigatesso.'][$key];
 		foreach ($tsConf as $key => $conf) {
@@ -86,7 +86,7 @@ class tx_infinigate_sso_eIDLoginMechanism extends tx_infinigate_sso_abstract {
 		}
 
 		return $this->registeredSsoServiceConfiguration;
-	}
+	}*/
 
 	/**
 	 * Creates an Images, sent to the client containing the given text.
