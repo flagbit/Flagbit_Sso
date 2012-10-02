@@ -20,7 +20,7 @@ class Flagbit_Sso_SignatureController extends Mage_Core_Controller_Front_Action
     		header("Content-type: image/gif");
     		header("Cache-Control: no-cache"); //HTTP/1.1
     		header("Pragma: no-cache"); //HTTP/1.0
-    		die(base64_decode('R0lGODlhAQABAJAAAP8AAAAAACH5BAUQAAAALAAAAAABAAEAAAICBAEAOw=='));    		
+    		die(base64_decode('R0lGODlhAQABAJAAAP8AAAAAACH5BAUQAAAALAAAAAABAAEAAAICBAEAOw=='));
 	    }
 	}
 }

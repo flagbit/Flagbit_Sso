@@ -6,10 +6,11 @@
             <block type="sso/sessionimage" />
         </reference>
     </customer_logged_in>
-    <customer_logged_out>
+
+    <default>
         <reference name="content">
             <block type="sso/sessionimage" />
         </reference>
-    </customer_logged_out>
+    </default>
     
 </layout>
