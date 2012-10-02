@@ -105,5 +105,5 @@ class tx_infinigate_sso_eIDLoginMechanism extends tx_infinigate_sso_abstract {
 	}
 }
 
-$obj = t3lib_div::makeInstance('tx_infinigate_feloginHook');
+$obj = t3lib_div::makeInstance('tx_infinigate_sso_eIDLoginMechanism');
 $obj->main();

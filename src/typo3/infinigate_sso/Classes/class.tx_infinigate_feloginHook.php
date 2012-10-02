@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__."/class.tx_infinigate_abstractSso.php";
 
-class tx_infinigate_sso_eIDLoginMechanism extends tx_infinigate_sso_abstract {
+class tx_infinigate_feloginHook extends tx_infinigate_sso_abstract {
 
 	protected $registeredSsoServiceConfiguration = array();
 

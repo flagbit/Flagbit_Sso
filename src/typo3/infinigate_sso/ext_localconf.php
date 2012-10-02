@@ -4,7 +4,7 @@ if (!defined('TYPO3_MODE')) {
 }
 
 	// register eID login mechanism 
-$TYPO3_CONF_VARS['FE']['eID_include']['infinigate_sso'] = 'EXT:infinigate_sso/Classes/class.tx_infinigate_sso_eIdLoginMechanism.php';
+$TYPO3_CONF_VARS['FE']['eID_include']['infinigate_sso'] = 'EXT:infinigate_sso/Classes/class.tx_infinigate_sso_eIDLoginMechanism.php';
 
 	// handle logout event
 $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing'][] = 'EXT:infinigate_sso/Classes/class.tx_infinigate_sso_logoutObserver.php:tx_infinigate_sso_logoutObserver->logoff';
