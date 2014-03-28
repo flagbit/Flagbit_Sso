@@ -5,6 +5,9 @@ class tx_infinigate_sso_abstract {
 
 	protected $extKey = 'infinigate_sso';
 
+	/**
+	 * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+	 */
 	protected $tsfe = NULL;
 
 	protected $fbSsoLib = NULL;
@@ -15,10 +18,15 @@ class tx_infinigate_sso_abstract {
 
 	protected $publicKey = NULL;
 
+	protected $feUserPids = '';
+
 	public function __construct() {
 		$this->fbSsoLib = t3lib_div::makeInstance('Flagbit_Sso');
 		$this->initTSFE();
 		$this->fetchSslKeys();
+
+		$_extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['infinigate_sso']);
+		$this->feUserPids = $_extConfig['FeUserPids'];
 	}
 
 	/**
@@ -45,16 +53,16 @@ class tx_infinigate_sso_abstract {
 	}
 	/**
 	 * This fetches the tx_infinigatesso TypoScript configuration
-	 * 
+	 *
 	 * @param $key The subindex of the to-be-fetched TS configuration
-	 * @return String TS configuration 
+	 * @return String TS configuration
 	 */
 	protected function fetchTyposcriptConfiguration($key) {
 		$tsConf = $this->tsfe->tmpl->setup['plugin.']['tx_infinigatesso.'][$key];
 		if (is_array($tsConf)) {
 			foreach ($tsConf as $key => $conf) {
 				$this->registeredSsoServiceConfiguration[$conf['name']] = $conf;
-			}			
+			}
 		}
 
 		return $this->registeredSsoServiceConfiguration;
@@ -62,7 +70,7 @@ class tx_infinigate_sso_abstract {
 
 	/**
 	 * Fetches the Ssl Keys configured in ext_emconf.txt
-	 * 
+	 *
 	 * @return void
 	 */
 	protected function fetchSslKeys() {

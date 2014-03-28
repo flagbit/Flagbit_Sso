@@ -1,2 +1,5 @@
 # cat=basic/enable; type=text; label= Private Key: Single Sign-On
 PrivateKey = 0000
+
+# cat=basic/enable; type=text; label= FE-User PIDs: PIDs that contain the relevant Frontend Users
+FeUserPids = 6592

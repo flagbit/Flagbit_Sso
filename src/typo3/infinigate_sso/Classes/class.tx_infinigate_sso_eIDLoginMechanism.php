@@ -17,7 +17,7 @@ class tx_infinigate_sso_eIDLoginMechanism extends tx_infinigate_sso_abstract {
 	 * user as a side-effect.
 	 * In case of a malfunction this script will assemble the errors and return
 	 * them as png image.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function main() {
@@ -61,9 +61,17 @@ class tx_infinigate_sso_eIDLoginMechanism extends tx_infinigate_sso_abstract {
 				// fetch according user from database ...
 			$info = $this->tsfe->fe_user->getAuthInfoArray();
 			$info['db_user']['username_column'] = 'email';
-			$user = $this->tsfe->fe_user->fetchUserRecord($info['db_user'], $container->getIdentifier());
+			if (!empty($this->feUserPids)) {
+			$extraWhere = ' AND pid IN ('.$this->feUserPids.')';
+			} else {
+				$extraWhere = '';
+			}
+			$user = $this->tsfe->fe_user->fetchUserRecord($info['db_user'], $container->getIdentifier(), $extraWhere);
+
 				// .. and finally create user session using TSFE
 			$this->tsfe->fe_user->createUserSession($user);
+//			$this->tsfe->fe_user->user = $this->tsfe->fe_user->fetchUserSession();
+//			$this->tsfe->fe_user->fetchGroupData();
 			$this->tsfe->fe_user->loginSessionStarted = TRUE;
 
 			header("Content-type: image/gif");
@@ -75,9 +83,9 @@ class tx_infinigate_sso_eIDLoginMechanism extends tx_infinigate_sso_abstract {
 
 	/**
 	 * This fetches the tx_infinigatesso TypoScript configuration
-	 * 
+	 *
 	 * @param $key The subindex of the to-be-fetched TS configuration
-	 * @return String TS configuration 
+	 * @return String TS configuration
 	 *
 	protected function fetchTyposcriptConfiguration($key) {
 		$tsConf = $this->tsfe->tmpl->setup['plugin.']['tx_infinigatesso.'][$key];
