@@ -3,14 +3,14 @@
 
     <customer_logged_in>
         <reference name="content">
-            <block type="sso/sessionimage" />
+            <block type="sso/sessionajax" />
         </reference>
     </customer_logged_in>
 
-    <default>
+    <customer_logged_out>
         <reference name="content">
-            <block type="sso/sessionimage" />
+            <block type="sso/sessionExpireAjax" />
         </reference>
-    </default>
-    
+    </customer_logged_out>
+
 </layout>

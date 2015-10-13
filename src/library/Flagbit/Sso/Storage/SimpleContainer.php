@@ -1,59 +1,35 @@
 <?php
-class Flagbit_Sso_Storage_SimpleContainer
-	extends Flagbit_Sso_Storage_Abstract
-	implements Flagbit_Sso_Storage_Interface
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * PHP Version 5.5
+ *
+ * @category   Flagbit
+ * @package    Flagbit_Sso
+ * @author     Jörg Weller <weller@flagbit.de>
+ * @author     David Paz <david.paz@flagbit.de>
+ * @copyright  2015 Flagbit
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @link       http://opensource.org/licenses/osl-3.0.php
+ */
+
+
+/**
+ * Class Flagbit_Sso_Storage_SimpleContainer
+ *
+ * @category   Flagbit
+ * @package    Flagbit_Sso
+ * @author     Matthäus Müller <m.mueller@flagbit.de>
+ * @author     David Paz <david.paz@flagbit.de>
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @link       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @deprecated Use Abstract instead as parent class
+ */
+class Flagbit_Sso_Storage_SimpleContainer extends Flagbit_Sso_Storage_Abstract
 {
-	
-	/**
-	 * @desc	using the magic function __call to provide pseudo getter/setter
-	 * @param	string $func
-	 * @param	array $args
-	 */
-    public function __call($func, $args)
-    {
-		if( (substr($func, 0, 3) === 'get' ) )
-		{
-			return $this->_get(substr($func, 3));
-		}
-		elseif( (substr($func, 0, 3) === 'set' ) )
-		{
-			return $this->_set(substr($func, 3), $args[0] );
-		}
-    	elseif( (substr($func, 0, 5) === 'unset' ) )
-		{
-			return $this->_unset(substr($func, 5));
-		}
-    }
-	
-	
-	/**
-	 * @param string $key
-	 * @param string $name
-	 * @return Flagbit_Sso_Storage_SimpleContainer 
-	 */
-	protected function _set($key, $name)
-	{
-		$this->_data[$key] = $name;
-		return $this;
-	}
-	
-	/**
-	* @param string $key
-	* @param string $name
-	* @return Flagbit_Sso_Storage_SimpleContainer
-	*/
-	protected function _unset($key)
-	{
-		unset($this->_data[$key]);
-		return $this;
-	}	
-	
-	/**
-	 * @param string $key 
-	 * @return mixed
-	 */	
-	protected function _get($key)
-	{
-		return $this->_data[$key];
-	}
 }

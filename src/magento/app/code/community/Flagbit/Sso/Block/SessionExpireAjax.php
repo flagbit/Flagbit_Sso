@@ -31,7 +31,7 @@
 
 
 /**
- * Class Flagbit_Sso_Block_Abstract
+ * Class Flagbit_Sso_Block_Sessionajax
  *
  * @category   Flagbit
  * @package    Flagbit_Sso
@@ -40,7 +40,7 @@
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @link       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Flagbit_Sso_Block_Abstract extends Mage_Core_Block_Template
+class Flagbit_Sso_Block_SessionExpireAjax extends Flagbit_Sso_Block_Abstract
 {
 
 
@@ -51,21 +51,37 @@ class Flagbit_Sso_Block_Abstract extends Mage_Core_Block_Template
     {
         $customerSession = Mage::getSingleton('customer/session');
 
-        if($customerSession->isLoggedIn()) {
-            $customer = $customerSession->getCustomer();
-            $params = array(
-                'Identifier' => $customer->getEmail(),
-                'FirstName' => $customer->getFirstname(),
-                'LastName' => $customer->getLastname(),
-                'Password' => $customer->getPasswordHash(),
-                'Action' => 'login',
-                'TimeStamp' => time(),
-                'UUID' => uniqid('Flagbit')
-            );
+        $customer = $customerSession->getCustomer();
+        $params = array(
+            'Identifier' => $customer->getEmail(),
+            'FirstName' => $customer->getFirstname(),
+            'LastName' => $customer->getLastname(),
+            'Password' => $customer->getPasswordHash(),
+            'Action' => 'logout',
+            'TimeStamp' => time(),
+            'UUID' => uniqid('Flagbit')
+        );
 
-            return Mage::helper('sso')->createSsoString($params);
+        return Mage::helper('sso')->createSsoString($params);
+    }
+
+
+    /**
+     * @return string
+     */
+    protected function _toHtml()
+    {
+        $param = $this->_initParams();
+        $html = '';
+
+        if (!empty($param)) {
+            $url = Mage::helper('sso/data')->getLogouturl();
+            $ajaxRequest = 'new Ajax.Request(\'' . $url . '\', { method:\'post\', parameters:{sso: \''.$param.'\'} });';
+            $html = '<script type="text/javascript">' . $ajaxRequest . '</script>';
         }
 
-        return '';
+        return $html;
     }
+
+
 }
