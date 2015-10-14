@@ -44,7 +44,7 @@ class tx_infinigate_sso_eIDLoginMechanism extends tx_infinigate_sso_abstract {
 			die($errOutput);
 		}
 
-		if (! $this->fbSsoLib->loadContainer($ssoData)->verify($ssoClient['publicKey'])) {
+		if (! $this->fbSsoLib->loadContainer($ssoData)->verify($ssoClient['publicKey']) || !$this->validateUserData()) {
 				// the given sso container has invalid signature
 			$this->createImage("Security Intrusion");
 				// we were already logged in by calling $this->initTSFE() so we need to log out!
@@ -79,6 +79,24 @@ class tx_infinigate_sso_eIDLoginMechanism extends tx_infinigate_sso_abstract {
 			header("Pragma: no-cache"); //HTTP/1.0
 			die(base64_decode('R0lGODlhAQABAJAAAP8AAAAAACH5BAUQAAAALAAAAAABAAEAAAICBAEAOw=='));
 		}
+	}
+
+	/**
+	 * Will return false if this login request has already been processed or is too old
+	 *
+	 * @return bool
+	 */
+	protected function validateUserData() {
+		/**
+		 * @var $cache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+		 */
+		$cache = t3lib_div::makeInstance("\\TYPO3\\CMS\\Core\\Cache\\CacheManager")->getCache('flagbitsso_requestCache');
+		$container = $this->fbSsoLib->getContainer();
+		$lifetime = time() - $container->getTimeStamp();
+
+		if($container->getAction() != 'login' || $lifetime > $this->requestLifetime || $cache->has($container->getUUID())) { return false; }
+		$cache->set($container->getUUID(), $container->getAction().'|'.$container->getTimestamp());
+		return true;
 	}
 
 	/**

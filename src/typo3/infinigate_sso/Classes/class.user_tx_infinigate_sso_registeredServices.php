@@ -20,7 +20,10 @@ class user_tx_infinigate_sso_registeredServices extends tx_infinigate_sso_abstra
 		}
 
 		$this->fbSsoLib->getContainer()
-			->setIdentifier($GLOBALS['TSFE']->fe_user->user['email']);
+			->setIdentifier($GLOBALS['TSFE']->fe_user->user['email'])
+			->setUUID(uniqid('Flagbit'))
+			->setTimeStamp(time())
+			->setAction('login');
 
 		$ssoData = $this->fbSsoLib->create($this->privateKey);
 
